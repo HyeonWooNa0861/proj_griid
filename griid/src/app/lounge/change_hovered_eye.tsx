@@ -93,7 +93,7 @@ export default function LoungePage() {
     border: '1px solid #d1d5db',
     borderRadius: '8px',
     fontSize: '16px',
-    marginBottom: '16px',
+    //marginBottom: '16px',
     boxSizing: 'border-box' as const,
   }
 
@@ -163,12 +163,16 @@ export default function LoungePage() {
                 style={{
                   position: 'absolute',
                   right: '12px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
+                  top: 0,
+                  bottom: 0,
+                  margin: 'auto',
+                  //transform: 'translateY(-50%)',
                   background: 'none',
                   border: 'none',
                   padding: 0,
                   cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
               >
                 <EyeIcon active={hovered || showPw} />
