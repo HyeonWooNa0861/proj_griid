@@ -136,7 +136,7 @@ export default function Sidebar({ isOpen, onClose, onLoginRequired }: SidebarPro
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
             onClick={() => {
-              router.push('@/about/about') //about page 로 이동
+              router.push('/about') //about page 로 이동
               onClose()
             }}
           >
