@@ -136,7 +136,7 @@ export default function Sidebar({ isOpen, onClose, onLoginRequired }: SidebarPro
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
             onClick={() => {
-              console.log('About clicked')
+              router.push('/about')
               onClose()
             }}
           >
