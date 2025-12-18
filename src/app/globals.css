@@ -1,18 +1,23 @@
 @import "tailwindcss";
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-html {
-  width: 100%;
-  min-height: 100vh;
-}
-
-body {
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+/* 커스텀 스크롤바 스타일 */
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
 }

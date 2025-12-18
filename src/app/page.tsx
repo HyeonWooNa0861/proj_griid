@@ -30,7 +30,6 @@ export default function Home() {
       id: `${prefix}${i + 1}`,
       label: `${prefix}${i + 1}`,
       image: null
-      // image: i < 3 ? `/images/${prefix}${i + 1}.jpg` : null,
     }))
   }
 
@@ -47,72 +46,9 @@ export default function Home() {
     { title: 'Journal', items: createInfiniteArray('J') },
   ]
 
-  const mainStyle = {
-    width: '100%',
-    minHeight: '100vh',
-    backgroundColor: '#f9fafb',
-    paddingTop: '80px',
-    paddingBottom: '48px',
-  }
-
-  const containerStyle = {
-    maxWidth: '1280px',
-    margin: '0 auto',
-    padding: '0 24px',
-  }
-
-  const rowStyle = {
-    marginBottom: '48px',
-  }
-
-  const rowTitleStyle = {
-    fontSize: '24px',
-    fontWeight: '600',
-    color: '#1f2937',
-    marginBottom: '20px',
-    paddingLeft: '4px',
-  }
-
-  const scrollContainerStyle = {
-    display: 'flex',
-    overflowX: 'auto',
-    gap: '24px',
-    scrollBehavior: 'smooth' as const,
-    paddingBottom: '16px',
-    scrollbarWidth: 'thin' as const,
-  }
-
   const getCardWidth = () => {
     const gap = 24 * (cardsPerView - 1)
     return `calc((100% - ${gap}px) / ${cardsPerView})`
-  }
-
-  const cardStyle = {
-    minWidth: getCardWidth(),
-    aspectRatio: '1',
-    backgroundColor: 'white',
-    borderRadius: '16px',
-    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-    cursor: 'pointer',
-    transition: 'transform 0.2s, box-shadow 0.2s',
-    overflow: 'hidden',
-    position: 'relative' as const,
-  }
-
-  const imageStyle = {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover' as const,
-  }
-
-  const textStyle = {
-    fontSize: cardsPerView === 1 ? '64px' : '72px',
-    fontWeight: '300',
-    color: '#1f2937',
   }
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -128,41 +64,37 @@ export default function Home() {
   }
 
   return (
-    <div style={mainStyle}>
+    <div className="w-full min-h-screen bg-gray-50 pt-20 pb-12">
       <Header />
-      <main style={containerStyle}>
+      <main className="max-w-7xl mx-auto px-6">
         {rows.map((row, rowIndex) => (
-          <div key={rowIndex} style={rowStyle}>
-            <h2 style={rowTitleStyle}>{row.title}</h2>
+          <div key={rowIndex} className="mb-12">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-5 pl-1">
+              {row.title}
+            </h2>
             <div 
-              style={scrollContainerStyle}
+              className="flex overflow-x-auto gap-6 scroll-smooth pb-4 scrollbar-thin"
               onScroll={handleScroll}
             >
               {row.items.map((item, index) => (
                 <div 
                   key={`${item.id}-${index}`} 
-                  style={cardStyle}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.02)'
-                    e.currentTarget.style.boxShadow = '0 10px 15px rgba(0,0,0,0.15)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1)'
-                    e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)'
-                  }}
+                  className="bg-white rounded-2xl shadow-md flex items-center justify-center shrink-0 cursor-pointer transition-all duration-200 overflow-hidden relative hover:scale-[1.02] hover:shadow-lg"
+                  style={{ minWidth: getCardWidth(), aspectRatio: '1' }}
                   onClick={() => console.log(`Clicked: ${item.id}`)}
                 >
-                  {/* 이미지가 있으면 이미지 표시, 없으면 텍스트 표시 */}
                   {item.image ? (
                     <Image 
                       src={item.image} 
                       alt={item.label}
                       fill
-                      style={imageStyle}
+                      className="w-full h-full object-cover"
                       sizes={getCardWidth()}
                     />
                   ) : (
-                    <span style={textStyle}>{item.label}</span>
+                    <span className={`font-light text-gray-800 ${cardsPerView === 1 ? 'text-6xl' : 'text-7xl'}`}>
+                      {item.label}
+                    </span>
                   )}
                 </div>
               ))}
@@ -170,22 +102,6 @@ export default function Home() {
           </div>
         ))}
       </main>
-
-      <style jsx global>{`
-        div::-webkit-scrollbar {
-          height: 6px;
-        }
-        div::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        div::-webkit-scrollbar-thumb {
-          background: #d1d5db;
-          border-radius: 10px;
-        }
-        div::-webkit-scrollbar-thumb:hover {
-          background: #9ca3af;
-        }
-      `}</style>
     </div>
   )
 }

@@ -13,58 +13,14 @@ export default function Header() {
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
 
-  const headerStyle = {
-    position: 'fixed' as const,
-    top: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    height: '64px',
-    backgroundColor: 'white',
-    borderBottom: '1px solid #e5e7eb',
-    zIndex: 50,
-  }
-
-  const containerStyle = {
-    position: 'relative' as const,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '0 24px',
-    maxWidth: '1920px',
-    margin: '0 auto',
-  }
-
-  const buttonStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '40px',
-    height: '40px',
-    border: 'none',
-    background: 'transparent',
-    cursor: 'pointer',
-    borderRadius: '8px',
-  }
-
-  const logoContainerStyle = {
-    position: 'absolute' as const,
-    left: '50%',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-  }
-
   return (
     <>
-      <header style={headerStyle}>
-        <div style={containerStyle}>
+      <header className="fixed top-0 left-0 right-0 w-full h-16 bg-white border-b border-gray-200 z-50">
+        <div className="relative w-full h-full flex items-center justify-between px-6 max-w-[1920px] mx-auto">
+          {/* 메뉴 버튼 */}
           <button 
-            style={buttonStyle} 
+            className="flex items-center justify-center w-10 h-10 border-none bg-transparent cursor-pointer rounded-lg hover:bg-gray-100 transition-colors"
             onClick={() => setIsSidebarOpen(true)}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="3" y1="6" x2="21" y2="6" />
@@ -73,57 +29,23 @@ export default function Header() {
             </svg>
           </button>
 
+          {/* 검색 바 */}
           {isSearchOpen && (
-            <div
-              style={{
-                position: 'fixed',
-                top: '64px', // header height
-                left: 0,
-                right: 0,
-                backgroundColor: 'white',
-                borderBottom: '1px solid #e5e7eb',
-                padding: '12px 24px',
-                zIndex: 40,
-                boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
-              }}
-            >
-              <div
-                style={{
-                  maxWidth: '800px',
-                  margin: '0 auto',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                }}
-              >
+            <div className="fixed top-16 left-0 right-0 bg-white border-b border-gray-200 py-3 px-6 z-40 shadow-sm">
+              <div className="max-w-3xl mx-auto flex items-center gap-3">
                 <input
                   type="text"
                   placeholder="Search..."
                   autoFocus
-                  style={{
-                    flex: 1,
-                    padding: '10px 14px',
-                    fontSize: '16px',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '8px',
-                    outline: 'none',
-                  }}
+                  className="flex-1 py-2.5 px-3.5 text-base border border-gray-300 rounded-lg outline-none focus:border-gray-500 text-gray-800"
                   onKeyDown={(e) => {
                     if (e.key === 'Escape') {
                       setIsSearchOpen(false)
                     }
                   }}
                 />
-
                 <button
-                  style={{
-                    padding: '10px 16px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    backgroundColor: '#1f2937',
-                    color: 'white',
-                    cursor: 'pointer',
-                  }}
+                  className="py-2.5 px-4 rounded-lg border-none bg-gray-800 text-white cursor-pointer hover:bg-gray-900 transition-colors"
                   onClick={() => console.log('search submit')}
                 >
                   Search
@@ -132,7 +54,8 @@ export default function Header() {
             </div>
           )}
 
-          <div style={logoContainerStyle}>
+          {/* 로고 */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <Link href="/" aria-label="Go to home">
               <Image 
                 src="/logo/Griid_IG_Profile_WH.png" 
@@ -140,21 +63,15 @@ export default function Header() {
                 width={140} 
                 height={140} 
                 priority 
-                style={{
-                  width: 'auto',
-                  height: 'auto',
-                  objectFit: 'contain',
-                  cursor: 'pointer',   // UX 개선
-                }}
+                className="w-auto h-auto object-contain cursor-pointer"
               />
             </Link>
           </div>
 
+          {/* 검색 버튼 */}
           <button 
-            style={buttonStyle} 
+            className="flex items-center justify-center w-10 h-10 border-none bg-transparent cursor-pointer rounded-lg hover:bg-gray-100 transition-colors"
             onClick={() => setIsSearchOpen((prev) => !prev)}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
             aria-label="toggle search"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
