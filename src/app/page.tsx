@@ -5,6 +5,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Header from '@/components/Header'
+import Link from 'next/link'
 
 export default function Home() {
   const [cardsPerView, setCardsPerView] = useState(3)
@@ -77,27 +78,44 @@ export default function Home() {
               onScroll={handleScroll}
             >
               {row.items.map((item, index) => (
-                <div 
-                  key={`${item.id}-${index}`} 
-                  className="bg-white rounded-2xl shadow-md flex items-center justify-center shrink-0 cursor-pointer transition-all duration-200 overflow-hidden relative hover:scale-[1.02] hover:shadow-lg"
-                  style={{ minWidth: getCardWidth(), aspectRatio: '1' }}
-                  onClick={() => console.log(`Clicked: ${item.id}`)}
+                <Link
+                  key={`${item.id}-${index}`}
+                  href={`/product/${item.id}`}
+                  aria-label={`${item.label} 상세 페이지로 이동`}
+                  className="shrink-0 block"
                 >
-                  {item.image ? (
-                    <Image 
-                      src={item.image} 
-                      alt={item.label}
-                      fill
-                      className="w-full h-full object-cover"
-                      sizes={getCardWidth()}
-                    />
-                  ) : (
-                    <span className={`font-light text-gray-800 ${cardsPerView === 1 ? 'text-6xl' : 'text-7xl'}`}>
-                      {item.label}
-                    </span>
-                  )}
-                </div>
+
+                  <div
+                    className="
+                      bg-white rounded-2xl shadow-md
+                      flex items-center justify-center
+                      cursor-pointer
+                      transition-all duration-200
+                      overflow-hidden relative
+                      hover:scale-[1.02] hover:shadow-lg
+                    "
+                    style={{ minWidth: getCardWidth(), aspectRatio: '1' }}
+                  >
+                    {item.image ? (
+                      <Image
+                        src={item.image}
+                        alt={item.label}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <span
+                        className={`font-light text-gray-800 ${
+                          cardsPerView === 1 ? 'text-6xl' : 'text-7xl'
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    )}
+                  </div>
+                </Link>
               ))}
+
             </div>
           </div>
         ))}
