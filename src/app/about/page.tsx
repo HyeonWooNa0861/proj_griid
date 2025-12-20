@@ -128,7 +128,7 @@ export default function AboutPage() {
     {
       name: '권세건',
       phone: '010-5229-5332',
-      email: '@com',
+      email: 'limitless@kookmin.ac.kr',
       instagram: 'myststemissafe',
     },
   ]
