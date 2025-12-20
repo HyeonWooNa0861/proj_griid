@@ -7,12 +7,12 @@ import { useSearchParams } from 'next/navigation'
 import { useRef } from 'react'
 
 const images = [
-  '/image/hat/image0.jpg',
-  '/image/hat/image1.jpg',
-  '/image/hat/image2.jpg',
+  '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Left_WH.png',
+  '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Center_WH.png',
+  '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Right_WH.png',
 ]
 
-const sections = ['A1','A2','A3','A4','A5','A6','A7','A8','A9']
+const sections = ['Dress','Outer','Top','Bottom','Acc','Craft','Objet','Jewelry','ETC']
 
 export default function CollectionsPage() {
   const searchParams = useSearchParams()
@@ -25,7 +25,7 @@ export default function CollectionsPage() {
       <main className="max-w-7xl mx-auto px-6">
         
         {/* 디자이너 이름 */}
-        <h1 className="text-4xl font-semibold text-gray-900 text-center mb-16">
+        <h1 className="text-3xl font-semibold text-gray-900 text-center mb-16">
           {designerName}
         </h1>
 

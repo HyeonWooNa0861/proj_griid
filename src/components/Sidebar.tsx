@@ -18,8 +18,21 @@ export default function Sidebar({
   const isLoggedIn = false
 
   const [openCollections, setOpenCollections] = useState(false)
+  const [openCategories, setOpenCategories] = useState(false)
 
   const designers = ['Designer A', 'Designer B', 'Designer C']
+
+  const categories = [
+    { id: 'Dress', label: 'Dress' },
+    { id: 'Outer', label: 'Outer' },
+    { id: 'Top', label: 'Top' },
+    { id: 'Bottom', label: 'Bottom' },
+    { id: 'Acc', label: 'Acc' },
+    { id: 'Craft', label: 'Craft' },
+    { id: 'Objet', label: 'Objet' },
+    { id: 'Jewelry', label: 'Jewelry' },
+    { id: 'ETC', label: 'ETC' },
+  ]
 
   const handleMyLoungeClick = () => {
     if (isLoggedIn) {
@@ -33,6 +46,11 @@ export default function Sidebar({
 
   const handleDesignerClick = (name: string) => {
     router.push(`/collections?designer=${encodeURIComponent(name)}`)
+    onClose()
+  }
+
+  const handleCategoryClick = (categoryId: string) => {
+    router.push(`/collections?category=${encodeURIComponent(categoryId)}`)
     onClose()
   }
 
@@ -70,16 +88,38 @@ export default function Sidebar({
             My Lounge
           </div>
 
-          {/* Collections */}
+          {/* Category */}
+          <div
+            className="px-6 py-4 cursor-pointer hover:bg-gray-50 flex justify-between items-center"
+            onClick={() => setOpenCategories((p) => !p)}
+          >
+            <span>Category</span>
+            <span className="text-sm">{openCategories ? '▲' : '▼'}</span>
+          </div>
+
+          {openCategories && (
+            <div className="pl-10">
+              {categories.map((category) => (
+                <div
+                  key={category.id}
+                  className="py-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900"
+                  onClick={() => handleCategoryClick(category.id)}
+                >
+                  {category.label}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Designer */}
           <div
             className="px-6 py-4 cursor-pointer hover:bg-gray-50 flex justify-between items-center"
             onClick={() => setOpenCollections((p) => !p)}
           >
-            <span>Collections</span>
+            <span>Designer</span>
             <span className="text-sm">{openCollections ? '▲' : '▼'}</span>
           </div>
 
-          {/* Designer list */}
           {openCollections && (
             <div className="pl-10">
               {designers.map((name) => (
