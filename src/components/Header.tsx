@@ -55,18 +55,25 @@ export default function Header() {
           )}
 
           {/* 로고 */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute left-1/2 top-0 h-full -translate-x-1/2 flex items-center">
             <Link href="/" aria-label="Go to home">
               <Image 
-                src="/logo/Griid_IG_Profile_WH.png" 
-                alt="griid logo" 
-                width={140} 
-                height={140} 
-                priority 
-                className="w-auto h-auto object-contain cursor-pointer"
+                src="/logo/Griid_Brand_Logo_Toolkit/Logo_Files/Griid_Logo_BK.png"
+                alt="griid logo"
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="
+                  h-12        /* ← 헤더에 딱 맞는 높이 */
+                  w-auto
+                  object-contain
+                  cursor-pointer
+                "
+                priority
               />
             </Link>
           </div>
+
 
           {/* 검색 버튼 */}
           <button 
