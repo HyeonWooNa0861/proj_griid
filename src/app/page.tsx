@@ -172,7 +172,7 @@ export default function Home() {
                                     <div
                                         className="
                                             relative
-                                            bg-white rounded-2xl shadow-md
+                                            bg-white rounded-none shadow-md
                                             overflow-hidden
                                             transition-all duration-200
                                             hover:scale-[1.02] hover:shadow-lg
