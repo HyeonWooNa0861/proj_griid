@@ -67,7 +67,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister, onLogi
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-2xl p-10 w-[90%] max-w-[400px] shadow-[0_20px_25px_rgba(0,0,0,0.15)] relative"
+        className="bg-white rounded-none p-10 w-[90%] max-w-[400px] shadow-[0_20px_25px_rgba(0,0,0,0.15)] relative"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 닫기 버튼 */}

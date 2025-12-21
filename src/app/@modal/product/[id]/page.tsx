@@ -101,7 +101,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className="
                 relative z-10
                 w-full max-w-4xl
-                bg-white rounded-2xl shadow-xl
+                bg-white rounded-none border border-gray-200 shadow-none
                 max-h-[85vh]
                 flex flex-col
             ">
