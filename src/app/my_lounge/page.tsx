@@ -38,7 +38,7 @@ export default function MyLoungePage() {
                     </h1>
 
                     <Link
-                        href="/lounge/settings/password"
+                        href="/lounge"
                         className="
                             px-4 py-2
                             text-sm
