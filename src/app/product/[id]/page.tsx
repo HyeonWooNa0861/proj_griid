@@ -15,3 +15,4 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 }
 //정식 상세페이지
 
+

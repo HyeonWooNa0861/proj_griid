@@ -103,7 +103,7 @@ function CollectionSection({
             href={`/product/${title}-${idx}`}
             className="shrink-0"
           >
-            <div className="relative w-64 h-64 rounded-2xl overflow-hidden bg-gray-100 shadow-sm hover:shadow-md transition">
+            <div className="relative w-64 h-64 rounded-none overflow-hidden bg-gray-100 shadow-sm hover:shadow-md transition">
               <Image
                 src={src}
                 alt=""
