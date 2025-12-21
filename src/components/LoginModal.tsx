@@ -7,6 +7,7 @@ interface LoginModalProps {
   isOpen: boolean
   onClose: () => void
   onSwitchToRegister: () => void
+  onLoginSuccess: () => void
 }
 
 const EyeIcon = ({ active }: { active: boolean }) => (
@@ -43,7 +44,7 @@ const EyeIcon = ({ active }: { active: boolean }) => (
   </svg>
 )
 
-export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: LoginModalProps) {
+export default function LoginModal({ isOpen, onClose, onSwitchToRegister, onLoginSuccess }: LoginModalProps) {
   const router = useRouter()
   const [id, setId] = useState('')
   const [password, setPassword] = useState('')
@@ -55,8 +56,9 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: Logi
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('Login:', { id, password })
-    router.push('/lounge')
-    onClose()
+    
+    onLoginSuccess()
+    onclose   
   }
 
   return (
