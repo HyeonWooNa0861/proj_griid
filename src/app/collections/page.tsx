@@ -113,6 +113,7 @@ function CollectionSection({
             className="shrink-0 block"
             style={{ width: getCardWidth() }}
           >
+<<<<<<< HEAD
             <div
               className="
                 relative
@@ -127,6 +128,9 @@ function CollectionSection({
               "
               style={{ aspectRatio: '2 / 3' }}
             >
+=======
+            <div className="relative w-64 h-64 rounded-none overflow-hidden bg-gray-100 shadow-sm hover:shadow-md transition">
+>>>>>>> 27f4b94e5b41ab0d585c09b4c4ad6ce7fbb9136f
               <Image
                 src={src}
                 alt=""

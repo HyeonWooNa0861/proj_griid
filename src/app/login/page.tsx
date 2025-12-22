@@ -42,7 +42,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
+      <div className="w-full max-w-md bg-white p-8 rounded-none border border-gray-200 shadow-none">
         <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
           Login
         </h2>
@@ -53,7 +53,7 @@ export default function LoginPage() {
             <label className="text-sm font-medium text-gray-700 mb-1">ID</label>
             <input
               type="text"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-black focus:outline-none focus:border-gray-500"
+              className="w-full border border-gray-300 px-3 py-2 text-black focus:outline-none focus:border-gray-500"
             />
           </div>
 
@@ -62,7 +62,7 @@ export default function LoginPage() {
             <label className="text-sm font-medium text-gray-700 mb-1">PW</label>
             <input
               type={showPw ? 'text' : 'password'}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 pr-10 text-black focus:outline-none focus:border-gray-500"
+              className="w-full border border-gray-300 px-3 py-2 pr-10 text-black focus:outline-none focus:border-gray-500"
             />
             <button
               type="button"
