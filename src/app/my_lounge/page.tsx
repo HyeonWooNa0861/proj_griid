@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/Header'
-import { useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 /* ---------------- 더미 이미지 ---------------- */
 
@@ -25,6 +25,24 @@ const sections = [
 /* ---------------- 페이지 ---------------- */
 
 export default function MyLoungePage() {
+    const [cardsPerView, setCardsPerView] = useState(3)
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) { setCardsPerView(1) }
+            else if (window.innerWidth < 1024) { setCardsPerView(2) }
+            else { setCardsPerView(3) }
+        }
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
+    const getCardWidth = () => {
+        const gap = 24 * (cardsPerView - 1)
+        return `calc((100% - ${gap}px) / ${cardsPerView})`
+    }
+
     return (
         <div className="min-h-screen bg-gray-50 pt-20 pb-16">
             <Header />
@@ -38,7 +56,7 @@ export default function MyLoungePage() {
                     </h1>
 
                     <Link
-                        href="/lounge/settings/password"
+                        href="/my_lounge/settings"
                         className="
                             px-4 py-2
                             text-sm
@@ -59,6 +77,7 @@ export default function MyLoungePage() {
                             key={section.key}
                             title={section.title}
                             images={section.items}
+                            getCardWidth={getCardWidth}
                         />
                     ))}
                 </div>
@@ -73,9 +92,11 @@ export default function MyLoungePage() {
 function LoungeSection({
     title,
     images,
+    getCardWidth,
 }: {
     title: string
     images: string[]
+    getCardWidth: () => string
 }) {
     const scrollRef = useRef<HTMLDivElement | null>(null)
 
@@ -115,24 +136,34 @@ function LoungeSection({
             <div
                 ref={scrollRef}
                 onScroll={handleScroll}
-                className="flex gap-6 overflow-x-auto scroll-smooth pb-2"
+                className="
+                    flex gap-6 
+                    overflow-x-auto 
+                    scroll-smooth 
+                    pb-2
+                    scrollbar-hide
+                "
             >
                 {infiniteImages.map((src, idx) => (
                     <Link
                         key={idx}
                         href={`/product/${title}-${idx}`}
-                        className="shrink-0"
+                        className="shrink-0 block"
+                        style={{ width: getCardWidth() }}
                     >
                         <div
                             className="
                                 relative
-                                w-64 h-64
-                                bg-gray-100
-                                border border-gray-200
+                                bg-white
+                                rounded-none
+                                shadow-md
                                 overflow-hidden
-                                transition
-                                hover:border-gray-400
+                                
+                                transition-all duration-200
+                                hover:scale-[1.02]
+                                hover:shadow-lg
                             "
+                            style={{ aspectRatio: '2 / 3' }}
                         >
                             <Image
                                 src={src}
@@ -140,6 +171,7 @@ function LoungeSection({
                                 fill
                                 className="object-cover"
                             />
+
                         </div>
                     </Link>
                 ))}

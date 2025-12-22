@@ -159,7 +159,13 @@ export default function Home() {
                         </h2>
 
                         <div
-                            className="flex gap-6 overflow-x-auto scroll-smooth pb-4"
+                            className="
+                              flex gap-6 
+                              overflow-x-auto 
+                              scroll-smooth 
+                              pb-4
+                              scrollbar-hide
+                            "
                             onScroll={handleScroll}
                         >
                             {row.items.map((item, index) => (
@@ -172,10 +178,13 @@ export default function Home() {
                                     <div
                                         className="
                                             relative
-                                            bg-white rounded-none shadow-md
+                                            bg-white rounded-none
+                                            shadow-md
                                             overflow-hidden
+                                            
                                             transition-all duration-200
-                                            hover:scale-[1.02] hover:shadow-lg
+                                            hover:scale-[1.02]
+                                            hover:shadow-lg
                                         "
                                         style={{ aspectRatio: '2 / 3' }}
                                     >

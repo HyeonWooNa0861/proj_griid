@@ -21,3 +21,11 @@
     background: #9ca3af;
   }
 }
+
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
