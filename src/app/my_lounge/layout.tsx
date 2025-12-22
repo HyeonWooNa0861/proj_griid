@@ -1,14 +1,14 @@
 export default function LoungeLayout({
     children,
-    modal,
+    overlay,
 }: {
     children: React.ReactNode
-    modal: React.ReactNode
+    overlay: React.ReactNode
 }) {
     return (
         <>
             {children}
-            {modal}
+            {overlay}
         </>
     )
 }

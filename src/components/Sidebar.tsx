@@ -45,16 +45,6 @@ export default function Sidebar({
         }
     }
 
-    const handleProductCreateClick = () => {
-        if (isLoggedIn) {
-            router.push('/product/create')
-            onClose()
-        } else {
-            onLoginRequired()
-            onClose()
-        }
-    }
-
     const handleDesignerClick = (name: string) => {
         router.push(`/collections?designer=${encodeURIComponent(name)}`)
         onClose()
@@ -97,14 +87,6 @@ export default function Sidebar({
                         onClick={handleMyLoungeClick}
                     >
                         My Lounge
-                    </div>
-
-                    {/* 제품 등록 - 새로 추가 */}
-                    <div
-                        className="px-6 py-4 cursor-pointer hover:bg-gray-50"
-                        onClick={handleProductCreateClick}
-                    >
-                        제품 등록
                     </div>
 
                     {/* Category */}
