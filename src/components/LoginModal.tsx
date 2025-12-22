@@ -57,7 +57,6 @@ export default function LoginModal({
 
     if (!isOpen) return null
 
-<<<<<<< HEAD
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault()
         console.log('Login:', { id, password })
@@ -69,21 +68,6 @@ export default function LoginModal({
     return (
         <div
             className="fixed inset-0 z-[2000] flex items-center justify-center"
-=======
-  return (
-    <div 
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[2000]"
-      onClick={onClose}
-    >
-      <div 
-        className="bg-white rounded-none p-10 w-[90%] max-w-[400px] shadow-[0_20px_25px_rgba(0,0,0,0.15)] relative"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* 닫기 버튼 */}
-        <button 
-          className="absolute top-4 right-4 w-8 h-8 border-none bg-transparent cursor-pointer flex items-center justify-center"
-          onClick={onClose}
->>>>>>> 27f4b94e5b41ab0d585c09b4c4ad6ce7fbb9136f
         >
             {/* 배경 */}
             <div

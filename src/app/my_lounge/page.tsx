@@ -56,11 +56,7 @@ export default function MyLoungePage() {
                     </h1>
 
                     <Link
-<<<<<<< HEAD
                         href="/my_lounge/settings"
-=======
-                        href="/lounge"
->>>>>>> 27f4b94e5b41ab0d585c09b4c4ad6ce7fbb9136f
                         className="
                             px-4 py-2
                             text-sm
