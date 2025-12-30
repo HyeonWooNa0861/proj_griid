@@ -35,25 +35,51 @@ export default function Header() {
 
                     {/* 검색 바 */}
                     {isSearchOpen && (
-                        <div className="fixed top-16 left-0 right-0 bg-white border-b border-gray-200 py-3 px-6 z-40 shadow-sm">
-                            <div className="max-w-3xl mx-auto flex items-center gap-3">
-                                <input
-                                    type="text"
-                                    placeholder="Search..."
-                                    autoFocus
-                                    className="flex-1 py-2.5 px-3.5 border border-gray-300 rounded-lg outline-none focus:border-gray-500"
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Escape') {
-                                            setIsSearchOpen(false)
-                                        }
-                                    }}
-                                />
-                                <button className="py-2.5 px-4 rounded-lg bg-gray-800 text-white hover:bg-gray-900">
-                                    Search
-                                </button>
-                            </div>
+                    <div
+                        className="
+                        fixed top-16 left-0 right-0
+                        bg-white/10
+                        backdrop-blur-sm
+                        z-40
+                        transition-transform duration-300
+                        "
+                    >
+                        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center gap-3">
+                        <input
+                            type="text"
+                            placeholder="Find your Desire"
+                            autoFocus
+                            className="
+                            flex-1
+                            px-4 py-3
+                            text-sm
+                            border border-gray-300
+                            outline-none
+                            focus:border-gray-500
+                            "
+                            onKeyDown={(e) => {
+                            if (e.key === 'Escape') {
+                                setIsSearchOpen(false)
+                            }
+                            }}
+                        />
+
+                        <button
+                            className="
+                            px-6 py-3
+                            text-sm
+                            bg-gray-900
+                            text-white
+                            hover:bg-black
+                            transition
+                            "
+                        >
+                            Search
+                        </button>
                         </div>
+                    </div>
                     )}
+
 
                     {/* 로고 */}
                     <div className="absolute left-1/2 top-0 h-full -translate-x-1/2 flex items-center">
