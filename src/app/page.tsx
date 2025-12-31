@@ -78,10 +78,10 @@ const ROW_CONFIG: Record<string, RowConfig> = {
     Others_List: {
         title: 'Others',
         items: [
-            { id: 'I1', image: '/image/object/001.jpeg' },
-            { id: 'I2', image: '/image/object/002.jpeg' },
-            { id: 'I3', image: '/image/object/003.jpeg' },
-            { id: 'I4', image: '/image/object/004.jpeg' },
+            { id: 'J1', image: '/image/object/001.jpeg' },
+            { id: 'J2', image: '/image/object/002.jpeg' },
+            { id: 'J3', image: '/image/object/003.jpeg' },
+            { id: 'J4', image: '/image/object/004.jpeg' },
         ],
     },
 }
@@ -111,10 +111,6 @@ export default function Home() {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-    const createInfiniteItems = (items: CardItem[]) => {
-        return [...items, ...items, ...items]
-    }
-
     const rows = ROW_ORDER.map((key) => {
         const config = ROW_CONFIG[key]
 
@@ -126,25 +122,13 @@ export default function Home() {
 
         return {
             title: config.title,
-            items: createInfiniteItems(normalized),
+            items: normalized, 
         }
     })
 
     const getCardWidth = () => {
         const gap = 24 * (cardsPerView - 1)
         return `calc((100% - ${gap}px) / ${cardsPerView})`
-    }
-
-    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        const el = e.currentTarget
-        const maxScroll = el.scrollWidth - el.clientWidth
-        const current = el.scrollLeft
-
-        if (current >= maxScroll - 10) {
-            el.scrollLeft = el.scrollWidth / 3
-        } else if (current <= 10) {
-            el.scrollLeft = (el.scrollWidth / 3) * 2
-        }
     }
 
     return (
@@ -161,12 +145,15 @@ export default function Home() {
                         <div
                             className="
                               flex gap-6 
-                              overflow-x-auto 
+                              overflow-x-scroll
+                              overflow-y-hidden
                               scroll-smooth 
                               pb-4
-                              scrollbar-hide
+                              [scrollbar-gutter:stable]
+                              scrollbar-thin
+                              scrollbar-thumb-gray-400
+                              scrollbar-track-gray-200
                             "
-                            onScroll={handleScroll}
                         >
                             {row.items.map((item, index) => (
                                 <Link
@@ -181,7 +168,6 @@ export default function Home() {
                                             bg-white rounded-none
                                             shadow-md
                                             overflow-hidden
-                                            
                                             transition-all duration-200
                                             hover:scale-[1.02]
                                             hover:shadow-lg
@@ -209,4 +195,3 @@ export default function Home() {
         </div>
     )
 }
-//홈페이지
