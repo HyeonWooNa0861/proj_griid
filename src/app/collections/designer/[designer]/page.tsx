@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/Header'
+import { useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
 const images = [
@@ -16,13 +17,21 @@ const images = [
 ]
 
 const sections = [
-  { key: 'active', title: 'Active Bids', items: images },
-  { key: 'completed', title: 'Completed Bids', items: [] },
-  { key: 'products', title: 'My Products', items: images },
-  { key: 'watchlist', title: 'Watchlist', items: [] },
+  'Dress',
+  'Outer',
+  'Top',
+  'Bottom',
+  'Acc',
+  'Craft',
+  'Objet',
+  'Jewelry',
+  'ETC',
 ]
 
-export default function MyLoungePage() {
+export default function DesignerPage() {
+  const searchParams = useSearchParams()
+  const designerName = searchParams.get('designer') ?? 'Designer A'
+
   const [cardsPerView, setCardsPerView] = useState(3)
 
   useEffect(() => {
@@ -31,6 +40,7 @@ export default function MyLoungePage() {
       else if (window.innerWidth < 1024) setCardsPerView(2)
       else setCardsPerView(3)
     }
+
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
@@ -46,29 +56,19 @@ export default function MyLoungePage() {
       <Header />
 
       <main className="max-w-7xl mx-auto px-6">
-        {/* 타이틀 */}
-        <div className="flex items-center justify-between mb-16">
-          <h1 className="text-3xl font-semibold text-gray-900">
-            My Lounge
-          </h1>
+        {/* 디자이너 이름 */}
+        <h1 className="text-3xl font-semibold text-gray-900 text-center mb-16">
+          {designerName}
+        </h1>
 
-          <Link
-            href="/my_lounge/settings"
-            className="px-4 py-2 text-sm border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
-          >
-            Settings
-          </Link>
-        </div>
-
-        {/* 섹션 */}
+        {/* 카테고리 섹션 */}
         <div className="space-y-20">
           {sections.map((section) => (
-            <LoungeSection
-              key={section.key}
-              title={section.title}
-              images={section.items}
+            <CollectionSection
+              key={section}
+              title={section}
+              images={images}
               getCardWidth={getCardWidth}
-              showAddButton={section.key === 'products'}
             />
           ))}
         </div>
@@ -77,21 +77,21 @@ export default function MyLoungePage() {
   )
 }
 
-function LoungeSection({
+/* ---------------- 섹션 컴포넌트 ---------------- */
+
+function CollectionSection({
   title,
   images,
   getCardWidth,
-  showAddButton,
 }: {
   title: string
   images: string[]
   getCardWidth: () => string
-  showAddButton?: boolean
 }) {
   if (images.length === 0) {
     return (
       <section>
-        <h2 className="text-xl font-medium text-gray-800 mb-4">
+        <h2 className="text-2xl font-medium text-gray-800 mb-4">
           {title}
         </h2>
         <p className="text-sm text-gray-400 italic">
@@ -103,23 +103,10 @@ function LoungeSection({
 
   return (
     <section>
-      {/* 제목 + Add */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-medium text-gray-800">
-          {title}
-        </h2>
+      <h2 className="text-2xl font-medium text-gray-800 mb-6">
+        {title}
+      </h2>
 
-        {showAddButton && (
-          <Link
-            href="/my_lounge/add"
-            className="px-3 py-1.5 text-sm border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
-          >
-            + Add
-          </Link>
-        )}
-      </div>
-
-      {/* 가로 스크롤 */}
       <div className="flex gap-6 overflow-x-auto scroll-smooth pb-2 scrollbar-hide">
         {images.map((src, idx) => (
           <Link
@@ -129,7 +116,15 @@ function LoungeSection({
             style={{ width: getCardWidth() }}
           >
             <div
-              className="relative bg-white shadow-md overflow-hidden transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
+              className="
+                relative
+                bg-white
+                shadow-md
+                overflow-hidden
+                transition-all duration-200
+                hover:scale-[1.02]
+                hover:shadow-lg
+              "
               style={{ aspectRatio: '2 / 3' }}
             >
               <Image
@@ -137,6 +132,11 @@ function LoungeSection({
                 alt=""
                 fill
                 className="object-cover"
+                sizes="
+                  (max-width: 768px) 100vw,
+                  (max-width: 1024px) 50vw,
+                  33vw
+                "
               />
             </div>
           </Link>

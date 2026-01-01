@@ -46,14 +46,15 @@ export default function Sidebar({
     }
 
     const handleDesignerClick = (name: string) => {
-        router.push(`/collections?designer=${encodeURIComponent(name)}`)
+        router.push(`/collections/designer/${encodeURIComponent(name)}`)
         onClose()
     }
 
     const handleCategoryClick = (categoryId: string) => {
-        router.push(`/collections?category=${encodeURIComponent(categoryId)}`)
+        router.push(`/collections/category/${categoryId}`)
         onClose()
     }
+
 
     return (
         <>
