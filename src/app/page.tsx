@@ -149,10 +149,7 @@ export default function Home() {
                               overflow-y-hidden
                               scroll-smooth 
                               pb-4
-                              [scrollbar-gutter:stable]
-                              scrollbar-thin
-                              scrollbar-thumb-gray-400
-                              scrollbar-track-gray-200
+                              scrollbar-hide
                             "
                         >
                             {row.items.map((item, index) => (
