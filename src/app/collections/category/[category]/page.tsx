@@ -33,14 +33,11 @@ const CATEGORY_IMAGES: Record<string, string[]> = {
     '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Center_WH.png',
     '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Right_WH.png',
   ],
-
-  // ✅ Sidebar에 있는 Objet 추가
   Objet: [
     '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Left_WH.png',
     '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Center_WH.png',
     '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Right_WH.png',
   ],
-
   Jewelry: [
     '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Left_WH.png',
     '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Center_WH.png',
@@ -53,12 +50,6 @@ const CATEGORY_IMAGES: Record<string, string[]> = {
   ],
 }
 
-// 한 화면에 카드 3개 보이도록 폭 계산 (gap-6 = 24px)
-const getCardWidth = (cardsPerView: number) => {
-  const gap = 24 * (cardsPerView - 1)
-  return `calc((100% - ${gap}px) / ${cardsPerView})`
-}
-
 export default async function CategoryPage({
   params,
 }: {
@@ -67,7 +58,13 @@ export default async function CategoryPage({
   const { category: rawCategory } = await params
   const category = decodeURIComponent(rawCategory)
 
-  const images = CATEGORY_IMAGES[category] ?? []
+  const baseImages = CATEGORY_IMAGES[category] ?? []
+
+  // 3 x 4 행렬로 강제 확장 (임시)
+  const images =
+    baseImages.length === 0
+      ? []
+      : Array.from({ length: 12 }, (_, i) => baseImages[i % baseImages.length])
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20 pb-16">
@@ -83,39 +80,30 @@ export default async function CategoryPage({
             해당 카테고리에 등록된 상품이 없습니다.
           </p>
         ) : (
-          <div
-            className="
-              flex gap-6
-              overflow-x-auto overflow-y-hidden
-              scroll-smooth
-              pb-4
-              scollbar-hide
-            "
-          >
+          <div className="grid grid-cols-3 gap-4">
             {images.map((src, idx) => (
               <Link
                 key={idx}
                 href={`/product/${category}-${idx}`}
-                className="shrink-0 block"
-                style={{ width: getCardWidth(3) }}
+                className="block"
               >
                 <div
                   className="
-                    relative bg-white rounded-none
-                    border border-gray-200 shadow-none
-                    overflow-hidden transition-all duration-200
-                    hover:scale-[1.02]
+                    relative
+                    bg-white
+                    border border-gray-200
+                    overflow-hidden
+                    transition-all duration-200
+                    hover:scale-[1.01]
                   "
-                  style={{ aspectRatio: '2 / 3' }}
+                  style={{ aspectRatio: '2 / 3' }} 
                 >
                   <Image
                     src={src}
                     alt={`${category} ${idx + 1}`}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 768px) 100vw,
-                           (max-width: 1024px) 50vw,
-                           33vw"
+                    sizes="33vw"
                   />
                 </div>
               </Link>
