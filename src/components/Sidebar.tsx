@@ -18,7 +18,7 @@ export default function Sidebar({
 }: SidebarProps) {
     const router = useRouter()
 
-    const [openCollections, setOpenCollections] = useState(false)
+    const [openDesigners, setOpenDesigners] = useState(false)
     const [openCategories, setOpenCategories] = useState(false)
 
     const designers = ['Designer A', 'Designer B', 'Designer C']
@@ -48,11 +48,13 @@ export default function Sidebar({
     const handleDesignerClick = (name: string) => {
         router.push(`/collections/designer/${encodeURIComponent(name)}`)
         onClose()
+        setOpenDesigners(false)
     }
 
     const handleCategoryClick = (categoryId: string) => {
-        router.push(`/collections/category/${categoryId}`)
+        router.push(`/collections/category/${encodeURIComponent(categoryId)}`)
         onClose()
+        setOpenCategories(false)
     }
 
 
@@ -90,6 +92,17 @@ export default function Sidebar({
                         My Lounge
                     </div>
 
+                    {/* All Collections */}
+                    <div
+                        className="px-6 py-4 cursor-pointer hover:bg-gray-50"
+                        onClick={() => {
+                            router.push('/collections')
+                            onClose()
+                        }}
+                    >
+                        All Collections
+                    </div>
+
                     {/* Category */}
                     <div
                         className="px-6 py-4 cursor-pointer hover:bg-gray-50 flex justify-between items-center"
@@ -120,15 +133,15 @@ export default function Sidebar({
                     {/* Designer */}
                     <div
                         className="px-6 py-4 cursor-pointer hover:bg-gray-50 flex justify-between items-center"
-                        onClick={() => setOpenCollections((p) => !p)}
+                        onClick={() => setOpenDesigners((p) => !p)}
                     >
                         <span>Designer</span>
                         <span className="text-sm">
-                            {openCollections ? '▲' : '▼'}
+                            {openDesigners ? '▲' : '▼'}
                         </span>
                     </div>
 
-                    {openCollections && (
+                    {openDesigners && (
                         <div className="pl-10">
                             {designers.map((name) => (
                                 <div
