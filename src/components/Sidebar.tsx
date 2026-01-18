@@ -93,7 +93,7 @@ export default function Sidebar({
                     </div>
 
                     {/* All Collections */}
-                    <div
+                    {/* <div
                         className="px-6 py-4 cursor-pointer hover:bg-gray-50"
                         onClick={() => {
                             router.push('/collections')
@@ -101,7 +101,7 @@ export default function Sidebar({
                         }}
                     >
                         All Collections
-                    </div>
+                    </div> */}
 
                     {/* Category */}
                     <div
