@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Sidebar from './Sidebar'
 import LoginModal from './LoginModal'
@@ -12,13 +12,50 @@ export default function Header() {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
     const [isSearchOpen, setIsSearchOpen] = useState(false)
-
-    /* 🔐 로그인 상태 */
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    
+    const [headerHeight, setHeaderHeight] = useState('h-16')
+    const [logoHeight, setLogoHeight] = useState('h-8')
+
+    useEffect(() => {
+        const updateHeaderSize = () => {
+            const screenHeight = window.innerHeight
+            const screenWidth = window.innerWidth
+            
+            // 헤더 높이 계산
+            let header = 'h-16'
+            let logo = 'h-8'
+            
+            if (screenHeight < 700) {
+                header = 'h-14' // 56px
+                logo = 'h-7'    // 28px (헤더의 50%)
+            } else if (screenHeight < 900) {
+                header = 'h-16' // 64px
+                logo = 'h-9'    // 36px (헤더의 56%)
+            } else {
+                header = 'h-20' // 80px
+                logo = 'h-12'   // 48px (헤더의 60%)
+            }
+            
+            // 모바일에서는 약간 더 작게
+            if (screenWidth < 640) {
+                if (header === 'h-20') logo = 'h-10'
+                if (header === 'h-16') logo = 'h-8'
+                if (header === 'h-14') logo = 'h-6'
+            }
+            
+            setHeaderHeight(header)
+            setLogoHeight(logo)
+        }
+
+        updateHeaderSize()
+        window.addEventListener('resize', updateHeaderSize)
+        return () => window.removeEventListener('resize', updateHeaderSize)
+    }, [])
 
     return (
         <>
-            <header className="fixed top-0 left-0 right-0 w-full h-16 bg-white border-b border-gray-200 z-50">
+            <header className={`fixed top-0 left-0 right-0 w-full ${headerHeight} bg-white border-b border-gray-200 z-50 transition-all duration-300`}>
                 <div className="relative w-full h-full flex items-center justify-between px-6 max-w-[1920px] mx-auto">
 
                     {/* 메뉴 버튼 */}
@@ -37,10 +74,11 @@ export default function Header() {
                     {isSearchOpen && (
                     <div
                         className="
-                        fixed top-16 left-0 right-0
-                        bg-white/10
+                        absolute top-full left-0 right-0
+                        bg-white/95
                         backdrop-blur-sm
                         z-40
+                        border-b border-gray-200
                         transition-transform duration-300
                         "
                     >
@@ -80,13 +118,11 @@ export default function Header() {
                     </div>
                     )}
 
-
-                    {/* 로고 */}
-                    <div className="absolute left-1/2 top-0 h-full -translate-x-1/2 flex items-center">
+                    {/* 로고 - 상하 여백 확보 */}
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center">
                         <Link 
                             href="/"
                             onClick={(e) => {
-                                // 현재 페이지가 홈 페이지인 경우 새로고침
                                 if (window.location.pathname === '/') {
                                     e.preventDefault()
                                     window.location.reload()
@@ -99,7 +135,7 @@ export default function Header() {
                                 width={0}
                                 height={0}
                                 sizes="100vw"
-                                className="h-12 w-auto object-contain"
+                                className={`${logoHeight} w-auto object-contain transition-all duration-300`}
                                 priority
                             />
                         </Link>

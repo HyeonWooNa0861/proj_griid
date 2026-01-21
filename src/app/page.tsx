@@ -14,6 +14,20 @@ type ProductItem = {
   images: string[]
 }
 
+/* ---------------- 디바이스별 최적 비율 설정 ---------------- */
+
+const ASPECT_RATIOS = {
+  mobile: 9 / 16,      // Instagram 릴스/스토리 (0.5625)
+  tablet: 4 / 5,       // Instagram 피드 세로 (0.8)
+  desktop: 9 / 16,     // 데스크탑도 릴스 비율 유지
+}
+
+function getDeviceAspectRatio(width: number): number {
+  if (width < 768) return ASPECT_RATIOS.mobile
+  if (width < 1024) return ASPECT_RATIOS.tablet
+  return ASPECT_RATIOS.desktop
+}
+
 /* ---------------- 임시 데이터 (추후 API/DB로 대체) ---------------- */
 
 const MOCK_PRODUCTS: ProductItem[] = [
@@ -41,117 +55,114 @@ const MOCK_PRODUCTS: ProductItem[] = [
     id: 'F3',
     category: 'Dress',
     designer: 'Designer A',
-    images: ['/image/dress/003.jpeg', '/image/dress/001.jpeg'],
+    images: ['/image/dress/003.jpeg', '/image/dress/001.jpeg', '/image/dress/002.jpeg'],
   },
   {
     id: 'F4',
     category: 'Dress',
     designer: 'Designer C',
-    images: ['/image/dress/004.jpeg'],
+    images: ['/image/dress/004.jpeg', '/image/dress/002.jpeg', '/image/dress/004.jpeg'],
   },
   {
     id: 'F5',
     category: 'Outer',
     designer: 'Designer A',
-    images: ['/image/outer/001.jpeg', '/image/outer/002.jpeg'],
+    images: ['/image/outer/001.jpeg', '/image/outer/002.jpeg', '/image/outer/001.jpeg'],
   },
   {
     id: 'F6',
     category: 'Outer',
     designer: 'Designer B',
-    images: ['/image/outer/002.jpeg'],
+    images: ['/image/outer/002.jpeg', '/image/outer/003.jpeg', '/image/outer/002.jpeg'],
   },
   {
     id: 'F7',
     category: 'Outer',
     designer: 'Designer D',
-    images: ['/image/outer/003.jpeg', '/image/outer/004.jpeg'],
+    images: ['/image/outer/003.jpeg', '/image/outer/004.jpeg', '/image/outer/003.jpeg'],
   },
   {
     id: 'F8',
     category: 'Outer',
     designer: 'Designer A',
-    images: ['/image/outer/004.jpeg'],
+    images: ['/image/outer/004.jpeg', '/image/outer/005.jpeg', '/image/outer/004.jpeg'],
   },
   {
     id: 'F9',
     category: 'Outer',
     designer: 'Designer E',
-    images: ['/image/outer/005.jpeg'],
+    images: ['/image/outer/005.jpeg', '/image/outer/006.jpeg', '/image/outer/005.jpeg'],
   },
   {
     id: 'F10',
     category: 'Outer',
     designer: 'Designer B',
-    images: ['/image/outer/006.jpeg', '/image/outer/007.jpeg'],
+    images: ['/image/outer/006.jpeg', '/image/outer/007.jpeg', '/image/outer/006.jpeg'],
   },
   {
     id: 'G1',
     category: 'Hat',
     designer: 'Designer F',
-    images: ['/image/hat/001.jpeg'],
+    images: ['/image/hat/001.jpeg', '/image/hat/002.jpeg', '/image/hat/001.jpeg'],
   },
   {
     id: 'G2',
     category: 'Hat',
     designer: 'Designer G',
-    images: ['/image/hat/002.jpeg', '/image/hat/003.jpeg'],
+    images: ['/image/hat/002.jpeg', '/image/hat/003.jpeg', '/image/hat/002.jpeg'],
   },
   {
     id: 'G4',
     category: 'Bag',
     designer: 'Designer H',
-    images: ['/image/bag/001.jpeg'],
+    images: ['/image/bag/001.jpeg', '/image/bag/002.jpeg', '/image/bag/001.jpeg'],
   },
   {
     id: 'G5',
     category: 'Bag',
     designer: 'Designer A',
-    images: ['/image/bag/002.jpeg', '/image/bag/003.jpeg'],
+    images: ['/image/bag/002.jpeg', '/image/bag/003.jpeg', '/image/bag/002.jpeg'],
   },
   {
     id: 'G7',
     category: 'Shoes',
     designer: 'Designer I',
-    images: ['/image/shoes/001.jpeg'],
+    images: ['/image/shoes/001.jpeg', '/image/shoes/002.jpeg', '/image/shoes/001.jpeg'],
   },
   {
     id: 'G8',
     category: 'Shoes',
     designer: 'Designer J',
-    images: ['/image/shoes/002.jpeg', '/image/shoes/003.jpeg'],
+    images: ['/image/shoes/002.jpeg', '/image/shoes/003.jpeg', '/image/shoes/002.jpeg'],
   },
   {
     id: 'H1',
     category: 'Jewelry',
     designer: 'Designer K',
-    images: ['/image/jewelry/001.jpeg'],
+    images: ['/image/jewelry/001.jpeg', '/image/jewelry/002.jpeg', '/image/jewelry/001.jpeg'],
   },
   {
     id: 'H2',
     category: 'Jewelry',
     designer: 'Designer A',
-    images: ['/image/jewelry/002.jpeg', '/image/jewelry/003.jpeg'],
+    images: ['/image/jewelry/002.jpeg', '/image/jewelry/003.jpeg', '/image/jewelry/002.jpeg'],
   },
   {
     id: 'I1',
     category: 'Object',
     designer: 'Designer L',
-    images: ['/image/object/001.jpeg'],
+    images: ['/image/object/001.jpeg', '/image/object/002.jpeg', '/image/object/001.jpeg'],
   },
   {
     id: 'I2',
     category: 'Object',
     designer: 'Designer M',
-    images: ['/image/object/002.jpeg', '/image/object/003.jpeg'],
+    images: ['/image/object/002.jpeg', '/image/object/003.jpeg', '/image/object/002.jpeg'],
   },
 ]
 
 /* ---------------- 유틸리티 함수 ---------------- */
 
-/**
- * Fisher-Yates 알고리즘을 사용한 배열 섞기
- */
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array]
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -161,16 +172,7 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled
 }
 
-/**
- * 데이터 페칭 함수 (추후 실제 API 호출로 대체)
- */
 async function fetchProducts(): Promise<ProductItem[]> {
-  // TODO: 실제 구현 시 API 호출
-  // const response = await fetch('/api/products?limit=20&random=true')
-  // const data = await response.json()
-  // return data.products
-
-  // 현재는 Mock 데이터를 랜덤 정렬해서 반환
   return shuffleArray(MOCK_PRODUCTS)
 }
 
@@ -181,10 +183,12 @@ export default function Home() {
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
   const [containerWidth, setContainerWidth] = useState<number | null>(null)
+  const [aspectRatio, setAspectRatio] = useState(9 / 16)
+  const [headerHeight, setHeaderHeight] = useState(64)
+  const [currentVisibleImage, setCurrentVisibleImage] = useState<string>('')
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // 초기 데이터 로드
     const loadProducts = async () => {
       try {
         const data = await fetchProducts()
@@ -198,78 +202,102 @@ export default function Home() {
 
     loadProducts()
 
-    // 로컬 스토리지에서 찜 목록 불러오기
     const saved = localStorage.getItem('favorites')
     if (saved) {
       setFavorites(new Set(JSON.parse(saved)))
     }
   }, [])
 
+  // 컨테이너 크기 계산 useEffect
   useEffect(() => {
-    // 데스크탑 환경에서 컨테이너 너비 계산
-    const calculateContainerWidth = () => {
+    const calculateContainerSize = () => {
       const screenWidth = window.innerWidth
-      
-      // 실제 viewport 높이 (헤더 제외)
-      // visualViewport는 주소창 등을 제외한 실제 보이는 영역
       const viewportHeight = window.visualViewport?.height || window.innerHeight
-      const headerHeight = 64 // pt-16 = 4rem = 64px
-      const availableHeight = viewportHeight - headerHeight
+      
+      let calculatedHeaderHeight = 64
+      if (viewportHeight < 700) {
+        calculatedHeaderHeight = 56
+      } else if (viewportHeight < 900) {
+        calculatedHeaderHeight = 64
+      } else {
+        calculatedHeaderHeight = 80
+      }
+      
+      setHeaderHeight(calculatedHeaderHeight)
+      
+      const availableHeight = viewportHeight - calculatedHeaderHeight
+      const deviceRatio = getDeviceAspectRatio(screenWidth)
+      setAspectRatio(deviceRatio)
 
-      // 모바일/태블릿: 전체 너비 사용
       if (screenWidth < 1024) {
         setContainerWidth(null)
         return
       }
 
-      // 데스크탑: 사용 가능한 높이에 맞춰 비율 계산 (9:16 기준)
-      const idealWidth = availableHeight * (9 / 16)
-      
-      // 최대 너비 제한 (화면의 50%를 넘지 않도록)
+      const idealWidth = availableHeight * deviceRatio
       const maxWidth = screenWidth * 0.5
-      
-      // 최소 너비 설정 (너무 좁아지지 않도록)
       const minWidth = 400
-      
+
       const calculatedWidth = Math.max(
         minWidth,
         Math.min(idealWidth, maxWidth)
       )
-      
+
       setContainerWidth(calculatedWidth)
-      
-      // 디버깅용 로그 (개발 환경에서만)
+
       if (process.env.NODE_ENV === 'development') {
         console.log({
           screenWidth,
           viewportHeight,
+          calculatedHeaderHeight,
           availableHeight,
+          deviceRatio,
           idealWidth,
-          maxWidth,
           finalWidth: calculatedWidth,
         })
       }
     }
 
-    // 초기 계산을 약간 지연시켜 레이아웃 안정화 대기
-    const timeoutId = setTimeout(calculateContainerWidth, 100)
+    const timeoutId = setTimeout(calculateContainerSize, 100)
+    window.addEventListener('resize', calculateContainerSize)
 
-    // 리사이즈 이벤트 리스너
-    window.addEventListener('resize', calculateContainerWidth)
-    
-    // visualViewport 변경 감지 (모바일 주소창 표시/숨김 등)
     if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', calculateContainerWidth)
+      window.visualViewport.addEventListener('resize', calculateContainerSize)
     }
-    
+
     return () => {
       clearTimeout(timeoutId)
-      window.removeEventListener('resize', calculateContainerWidth)
+      window.removeEventListener('resize', calculateContainerSize)
       if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', calculateContainerWidth)
+        window.visualViewport.removeEventListener('resize', calculateContainerSize)
       }
     }
   }, [])
+
+  // IntersectionObserver useEffect (별도로 분리)
+  useEffect(() => {
+    if (!containerRef.current) return
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+            // img.src 대신 data attribute에서 원본 경로 가져오기
+            const imgPath = entry.target.getAttribute('data-current-image')
+            if (imgPath) {
+                setCurrentVisibleImage(imgPath)
+            }
+            }
+        })
+        },
+        { threshold: 0.5 }
+    )
+
+    const cards = containerRef.current.querySelectorAll('[data-product-card]')
+    cards.forEach((card) => observer.observe(card))
+
+    return () => observer.disconnect()
+  }, [products])
 
   const toggleFavorite = (productId: string) => {
     setFavorites((prev) => {
@@ -296,17 +324,41 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-black">
+    <div className="w-full min-h-screen bg-black relative">
       <Header />
 
-      {/* 스크롤 컨테이너 - 데스크탑에서 중앙 정렬 */}
-      <div className="pt-16 flex justify-center bg-black">
+      {/* 배경 블러 레이어 - 컨테이너 밖 전체 영역 */}
+      {currentVisibleImage && containerWidth && (
+        <div 
+          className="fixed inset-0 z-0"
+          style={{ 
+            top: `${headerHeight}px`,
+          }}
+        >
+          <div className="relative w-full h-full">
+            <Image
+              src={currentVisibleImage}
+              alt=""
+              fill
+              className="object-cover blur-3xl scale-125"
+              style={{ opacity: 0.85 }}
+              sizes="100vw"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* 컨테이너 래퍼 */}
+      <div 
+        className="flex justify-center relative z-10"
+        style={{ paddingTop: `${headerHeight}px` }}
+      >
         <div
           ref={containerRef}
-          className="overflow-y-auto overflow-x-hidden snap-y snap-mandatory"
+          className="overflow-y-auto overflow-x-hidden snap-y snap-mandatory scrollbar-hide"
           style={{
             width: containerWidth ? `${containerWidth}px` : '100%',
-            height: 'calc(100vh - 4rem)', // 헤더 높이(64px) 제외
+            height: `calc(100vh - ${headerHeight}px)`,
             scrollSnapType: 'y mandatory',
           }}
         >
@@ -316,6 +368,8 @@ export default function Home() {
               product={product}
               isFavorited={favorites.has(product.id)}
               onToggleFavorite={toggleFavorite}
+              aspectRatio={aspectRatio}
+              onImageChange={setCurrentVisibleImage}
             />
           ))}
         </div>
@@ -330,28 +384,38 @@ function ProductCard({
   product,
   isFavorited,
   onToggleFavorite,
+  aspectRatio,
+  onImageChange,
 }: {
   product: ProductItem
   isFavorited: boolean
   onToggleFavorite: (id: string) => void
+  aspectRatio: number
+  onImageChange?: (imageUrl: string) => void
 }) {
   const router = useRouter()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
 
   const handleScroll = () => {
     if (!scrollRef.current) return
-
     const scrollLeft = scrollRef.current.scrollLeft
     const cardWidth = scrollRef.current.offsetWidth
     const newIndex = Math.round(scrollLeft / cardWidth)
-
-    setCurrentImageIndex(newIndex)
+    
+    if (newIndex !== currentImageIndex) {
+      setCurrentImageIndex(newIndex)
+      
+      // 원본 경로 전달
+      if (onImageChange && product.images[newIndex]) {
+        onImageChange(product.images[newIndex])
+      }
+    }
   }
 
   const scrollToImage = (index: number) => {
     if (!scrollRef.current) return
-
     const cardWidth = scrollRef.current.offsetWidth
     scrollRef.current.scrollTo({
       left: cardWidth * index,
@@ -359,8 +423,23 @@ function ProductCard({
     })
   }
 
+  useEffect(() => {
+    if (onImageChange && product.images[currentImageIndex]) {
+      const timer = setTimeout(() => {
+        onImageChange(product.images[currentImageIndex])
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [currentImageIndex, product.images, onImageChange])
+
   return (
-    <div className="relative w-full h-screen snap-start snap-always">
+    <div 
+      ref={cardRef}
+      data-product-card
+      data-current-image={product.images[currentImageIndex]}  // ← 추가
+      className="relative w-full snap-start snap-always" 
+      style={{ height: '100%' }}
+    >
       {/* 이미지 스크롤 영역 */}
       <div
         ref={scrollRef}
@@ -368,29 +447,38 @@ function ProductCard({
         className="w-full h-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory scrollbar-hide flex"
         style={{
           scrollSnapType: 'x mandatory',
+          scrollSnapStop: 'always',
           WebkitOverflowScrolling: 'touch',
         }}
       >
         {product.images.map((image, index) => (
           <div
             key={index}
-            className="w-full h-full shrink-0 relative snap-center snap-always"
+            className="w-full h-full shrink-0 relative snap-center snap-always flex items-center justify-center"
           >
-            <Image
-              src={image}
-              alt={`${product.category} ${product.id}`}
-              fill
-              className="object-cover"
-              priority={index === 0}
-              sizes="100vw"
-            />
+            {/* 메인 이미지 - 세로 꽉 채움 */}
+            <div 
+              className="relative h-full"
+              style={{
+                aspectRatio: `${aspectRatio}`,
+              }}
+            >
+              <Image
+                src={image}
+                alt={`${product.category} ${product.id}`}
+                fill
+                className="object-cover"
+                priority={index === 0}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            </div>
           </div>
         ))}
       </div>
 
-      {/* 이미지 인디케이터 (여러 이미지가 있을 때만 표시) */}
+      {/* 이미지 인디케이터 */}
       {product.images.length > 1 && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
           {product.images.map((_, index) => (
             <button
               key={index}
@@ -407,26 +495,22 @@ function ProductCard({
       )}
 
       {/* 하단 액션 버튼 영역 */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-6 pb-8">
-        {/* 상품 정보 */}
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-6 pb-8 z-20">
         <div className="mb-4">
           <p className="text-white text-sm font-medium mb-1">
             {product.category}
           </p>
-          <p className="text-white/70 text-xs">by {product.designer}</p>
+          <p className="text-white/70 text-xs">designed by {product.designer}</p>
         </div>
 
-        {/* 버튼 그룹 */}
         <div className="flex gap-3">
-          {/* 상세보기 버튼 */}
           <button
             onClick={() => router.push(`/product/${product.id}`)}
-            className="flex-1 py-3 bg-white text-black text-sm font-semibold rounded-sm hover:bg-gray-100 transition-colors"
+            className="flex-1 py-3 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-sm border border-white/30 hover:bg-white/20 transition-colors"
           >
-            상세보기
+            Description
           </button>
 
-          {/* 디자이너 버튼 */}
           <button
             onClick={() =>
               router.push(
@@ -435,10 +519,9 @@ function ProductCard({
             }
             className="flex-1 py-3 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-sm border border-white/30 hover:bg-white/20 transition-colors"
           >
-            디자이너
+            {product.designer}
           </button>
 
-          {/* 찜 버튼 */}
           <button
             onClick={() => onToggleFavorite(product.id)}
             className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-sm border border-white/30 hover:bg-white/20 transition-colors"
