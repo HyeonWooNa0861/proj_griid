@@ -407,7 +407,6 @@ function ProductCard({
     if (newIndex !== currentImageIndex) {
       setCurrentImageIndex(newIndex)
       
-      // 원본 경로 전달
       if (onImageChange && product.images[newIndex]) {
         onImageChange(product.images[newIndex])
       }
@@ -436,7 +435,7 @@ function ProductCard({
     <div 
       ref={cardRef}
       data-product-card
-      data-current-image={product.images[currentImageIndex]}  // ← 추가
+      data-current-image={product.images[currentImageIndex]}
       className="relative w-full snap-start snap-always" 
       style={{ height: '100%' }}
     >
@@ -454,23 +453,52 @@ function ProductCard({
         {product.images.map((image, index) => (
           <div
             key={index}
-            className="w-full h-full shrink-0 relative snap-center snap-always flex items-center justify-center"
+            className="w-full h-full shrink-0 relative snap-center snap-always"
           >
-            {/* 메인 이미지 - 세로 꽉 채움 */}
-            <div 
-              className="relative h-full"
-              style={{
-                aspectRatio: `${aspectRatio}`,
-              }}
-            >
+            {/* 블러 배경 레이어 - 전체 영역 채우기 */}
+            <div className="absolute inset-0">
               <Image
                 src={image}
-                alt={`${product.category} ${product.id}`}
+                alt=""
                 fill
-                className="object-cover"
-                priority={index === 0}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover blur-3xl scale-110"
+                style={{ opacity: 0.5 }}
+                sizes="100vw"
               />
+            </div>
+
+            {/* 메인 이미지 레이어 - 중앙 배치, 비율 유지, 최대 크기 */}
+            <div className="absolute inset-0 flex items-center justify-center p-0">
+              <div 
+                className="relative max-w-full max-h-full"
+                style={{
+                  aspectRatio: `${aspectRatio}`,
+                  width: '100%',
+                  height: '100%',
+                }}
+              >
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <div
+                    className="relative"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                      aspectRatio: `${aspectRatio}`,
+                    }}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${product.category} ${product.id}`}
+                      fill
+                      className="object-contain"
+                      priority={index === 0}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         ))}
@@ -500,14 +528,14 @@ function ProductCard({
           <p className="text-white text-sm font-medium mb-1">
             {product.category}
           </p>
-          <p className="text-white/70 text-xs">designed by {product.designer}</p>
+          <p className="text-white/70 text-xs"> designed by {product.designer}</p>
         </div>
 
         <div className="flex gap-3">
           <button
             onClick={() => router.push(`/product/${product.id}`)}
             className="flex-1 py-3 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-sm border border-white/30 hover:bg-white/20 transition-colors"
-          >
+            aria-label="상품 상세 설명 보기">
             Description
           </button>
 
@@ -518,7 +546,7 @@ function ProductCard({
               )
             }
             className="flex-1 py-3 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-sm border border-white/30 hover:bg-white/20 transition-colors"
-          >
+            aria-label="디자이너 컬렉션 보기">
             {product.designer}
           </button>
 
