@@ -8,7 +8,7 @@ export default function WinnerEmailPreviewPage() {
     category: 'Outer',
     finalPrice: 180000,
     secondPrice: 130000,
-    paymentUrl: `http://localhost:3001/payment/test-order-123`,
+    paymentUrl: `http://localhost:3000/payment/test-order-123`,
   }
 
   return (
@@ -182,4 +182,4 @@ export default function WinnerEmailPreviewPage() {
 
 //결제 페이지를 직접 보려면 URL에 테스트 주문 ID를 입력하면 됩니다:
 
-// http://localhost:3001/preview/winner-email
+// http://localhost:3000/preview/winner-email

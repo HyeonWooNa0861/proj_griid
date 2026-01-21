@@ -83,7 +83,16 @@ export default function Header() {
 
                     {/* 로고 */}
                     <div className="absolute left-1/2 top-0 h-full -translate-x-1/2 flex items-center">
-                        <Link href="/">
+                        <Link 
+                            href="/"
+                            onClick={(e) => {
+                                // 현재 페이지가 홈 페이지인 경우 새로고침
+                                if (window.location.pathname === '/') {
+                                    e.preventDefault()
+                                    window.location.reload()
+                                }
+                            }}
+                        >
                             <Image
                                 src="/logo/Griid_Brand_Logo_Toolkit/Logo_Files/Griid_Logo_BK.png"
                                 alt="griid logo"
