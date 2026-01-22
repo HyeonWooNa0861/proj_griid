@@ -467,25 +467,41 @@ function ProductCard({
               />
             </div>
 
-            {/* 메인 이미지 레이어 - 고정 프레임 + object-cover */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              {/* 프레임(고정 비율) */}
-              <div
-                className="relative h-full"
+
+
+
+
+            메인 이미지 레이어 - 중앙 배치, 비율 유지, 최대 크기
+            <div className="absolute inset-0 flex items-center justify-center p-0">
+              <div 
+                className="relative max-w-full max-h-full"
                 style={{
-                  aspectRatio: `${aspectRatio}`, // 모바일/태블릿/데스크탑 비율 유지
-                  maxWidth: '100%',
-                  maxHeight: '100%',
+                  aspectRatio: `${aspectRatio}`,
+                  width: '100%',
+                  height: '100%',
                 }}
               >
-                <Image
-                  src={image}
-                  alt={`${product.category} ${product.id}`}
-                  fill
-                  className="object-cover"
-                  priority={index === 0}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <div
+                    className="relative"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                      aspectRatio: `${aspectRatio}`,
+                    }}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${product.category} ${product.id}`}
+                      fill
+                      className="object-contain"
+                      priority={index === 0}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
