@@ -76,30 +76,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         setError('')
     }
 
-    const handleHorizontalScroll = () => {
-        if (!scrollRef.current) return
-
-        const el = scrollRef.current
-        const maxScroll =
-            el.scrollWidth - el.clientWidth
-        const current = el.scrollLeft
-
-        if (current <= 10 || current >= maxScroll - 10) {
-            el.scrollLeft = maxScroll / 3
-        }
-    }
-
     /* ---------------- 이미지 ---------------- */
     const images = [
         '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Left_WH.png',
         '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Center_WH.png',
         '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Right_WH.png',
-    ]
-
-    const infiniteImages = [
-        ...images,
-        ...images,
-        ...images,
     ]
 
     return (
@@ -139,18 +120,19 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
                 {/* 스크롤 영역 */}
                 <div className="flex-1 overflow-y-auto">
-                    {/* 이미지 무한 스크롤 */}
                     <div
                         ref={scrollRef}
-                        onScroll={handleHorizontalScroll}
                         className="
                             flex gap-4
                             overflow-x-auto
                             px-10 py-8
                             scroll-smooth
+                            [scrollbar-width:none]
+                            [-ms-overflow-style:none]
+                            [&::-webkit-scrollbar]:hidden
                         "
                     >
-                        {infiniteImages.map((src, idx) => (
+                        {images.map((src, idx) => (
                             <div
                                 key={idx}
                                 className="
