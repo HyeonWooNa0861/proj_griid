@@ -467,11 +467,7 @@ function ProductCard({
               />
             </div>
 
-
-
-
-
-            메인 이미지 레이어 - 중앙 배치, 비율 유지, 최대 크기
+            {/* 메인 이미지 레이어 - 중앙 배치, 비율 유지, 최대 크기 */}
             <div className="absolute inset-0 flex items-center justify-center p-0">
               <div 
                 className="relative max-w-full max-h-full"
