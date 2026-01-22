@@ -125,13 +125,13 @@ export default async function CategoryPage({
       <Header />
 
       <main className="max-w-7xl mx-auto px-6">
-        <h1 className="text-3xl font-semibold text-gray-900 text-center mb-4">
+        {/* <h1 className="text-3xl font-semibold text-gray-900 text-center mb-4">
           {category}
         </h1>
 
         <p className="text-center text-sm text-gray-500 mb-12">
           총 {totalItems}개의 상품
-        </p>
+        </p> */}
 
         {currentProducts.length === 0 ? (
           <p className="text-center text-sm text-gray-400">

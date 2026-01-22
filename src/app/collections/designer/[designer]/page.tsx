@@ -90,14 +90,16 @@ function CollectionSection({
 }) {
   if (images.length === 0) {
     return (
-      <section>
-        <h2 className="text-2xl font-medium text-gray-800 mb-4">
-          {title}
-        </h2>
-        <p className="text-sm text-gray-400 italic">
-          표시할 항목이 없습니다
-        </p>
-      </section>
+      null
+      // 표시항목 없으면 생략 -> 아래는 확인용 코드
+      // <section>
+      //   <h2 className="text-2xl font-medium text-gray-800 mb-4">
+      //     {title}
+      //   </h2>
+      //   <p className="text-sm text-gray-400 italic">
+      //     표시할 항목이 없습니다
+      //   </p>
+      // </section>
     )
   }
 

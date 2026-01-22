@@ -81,29 +81,39 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Left_WH.png',
         '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Center_WH.png',
         '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Right_WH.png',
+        '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Left_WH.png',
+        '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Center_WH.png',
+        '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Right_WH.png',
     ]
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center scrollbar-hide">
             {/* 배경 */}
-            <div className="absolute inset-0 bg-black/30 backdrop-blur-md" />
+            <div className="absolute inset-0 bg-black/30 backdrop-blur-md scrollbar-hide" />
 
             {/* 카드 */}
             <div className={cardClass}>
                 {/* 헤더 */}
                 <div className="relative px-10 pt-10 pb-6">
-
                     <div className="px-7">
                         <div className="h-px bg-gray-300 mb-6"></div>
                     </div>
-
                     <div className="text-center">
-                        <h1 className="text-3xl font-semibold text-gray-800">gri:d</h1>
-                        <p className="text-sm text-gray-500 mt-2">
-                            Product {params.id}
-                        </p>
+                        <div className="flex flex-col items-center justify-center">
+                            <Image
+                                src="/logo/Griid_Brand_Logo_Toolkit/Logo_Files/Griid_Logo_BK.png"
+                                alt="griid logo"
+                                width={120}
+                                height={40}
+                                sizes="100vw"
+                                className="h-10 w-auto object-contain transition-all duration-300"
+                                priority
+                            />
+                            <p className="text-sm text-gray-500 mt-2">
+                                Product {params.id}
+                            </p>
+                        </div>
                     </div>
-
                     <button
                         onClick={() => router.back()}
                         className="
@@ -112,14 +122,13 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             flex items-center justify-center
                             rounded-full
                             hover:bg-gray-100"
-                            aria-label="close"
+                        aria-label="close"
                     >
                         ✕
                     </button>
                 </div>
-
                 {/* 스크롤 영역 */}
-                <div className="flex-1 overflow-y-auto">
+                <div className="flex-1 overflow-y-auto scrollbar-hide">
                     <div
                         ref={scrollRef}
                         className="
@@ -127,9 +136,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             overflow-x-auto
                             px-10 py-8
                             scroll-smooth
-                            [scrollbar-width:none]
-                            [-ms-overflow-style:none]
-                            [&::-webkit-scrollbar]:hidden
+                            scrollbar-hide
                         "
                     >
                         {images.map((src, idx) => (
@@ -152,11 +159,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             </div>
                         ))}
                     </div>
-
                     {/* 카테고리 / 디자이너 메타 */}
                     <div className="px-10 -mt-2 mb-6">
                         <div className="flex items-center justify-between text-sm">
-
                             {/* Category */}
                             <button
                                 onClick={() =>
@@ -172,7 +177,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             >
                                 {category}
                             </button>
-
                             {/* Designer */}
                             <button
                                 onClick={() =>
@@ -190,11 +194,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             </button>
                         </div>
                     </div>
-
                     {/* 숫자 입력 */}
                     <div className="px-10 mb-6 flex flex-col gap-3">
                         <p className={sectionTitleClass}>Price Logs</p>
-
                         <div className="flex gap-3">
                             <input
                                 type="text"
@@ -218,18 +220,15 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                                 입력
                             </button>
                         </div>
-
                         {error && (
                             <p className="text-sm text-red-500">
                                 {error}
                             </p>
                         )}
                     </div>
-
                     {/* 기록 리스트 */}
                     <div className="px-10 pb-10">
                         <p className={sectionTitleClass}>Previous Logs</p>
-
                         <div className={`
                             mt-2
                             border border-gray-200
@@ -239,7 +238,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             ${expanded ? 'max-h-56' : 'max-h-40'}
                             overflow-hidden
                         `}>
-                            <div className="p-4 overflow-y-auto">
+                            <div className="p-4 overflow-y-auto scrollbar-hide">
                                 <ul className="space-y-2 text-sm text-gray-700">
                                     {logs.map((n, i) => (
                                         <li
@@ -256,7 +255,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                                     ))}
                                 </ul>
                             </div>
-
                             {logs.length > 4 && (
                                 <div className="px-4 pb-4">
                                     <button
@@ -264,28 +262,17 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                                             setExpanded((p) => !p)
                                         }
                                         className="text-xs text-gray-500 hover:text-gray-800 underline"
-                                        >
-
-                                        // className="
-                                        //     absolute bottom-2
-                                        //     left-1/2 -translate-x-1/2
-                                        //     text-xs text-gray-500
-                                        //     bg-white/80 backdrop-blur
-                                        //     px-3 py-1
-                                        //     rounded-full
-                                        //     shadow-sm
-                                        //     opacity-0
-                                        //     group-hover:opacity-100
-                                        //     hover:text-gray-800
-                                        // "
+                                    >
                                         {expanded
                                             ? 'Collapse ▲'
                                             : 'Expand ▼'}
                                     </button>
+                                </div>
+                            )}
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>)}
+    )
+}
