@@ -95,9 +95,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className={cardClass}>
                 {/* 헤더 */}
                 <div className="relative px-10 pt-10 pb-6">
-                    <div className="px-7">
+                    {/* 위에 막대 주석처리 */}
+                    {/* <div className="px-7">
                         <div className="h-px bg-gray-300 mb-6"></div>
-                    </div>
+                    </div> */}
+                
                     <div className="text-center">
                         <div className="flex flex-col items-center justify-center">
                             <Image
@@ -159,6 +161,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             </div>
                         ))}
                     </div>
+
                     {/* 카테고리 / 디자이너 메타 */}
                     <div className="px-10 -mt-2 mb-6">
                         <div className="flex items-center justify-between text-sm">
@@ -194,6 +197,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             </button>
                         </div>
                     </div>
+
                     {/* 숫자 입력 */}
                     <div className="px-10 mb-6 flex flex-col gap-3">
                         <p className={sectionTitleClass}>Price Logs</p>
@@ -226,7 +230,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             </p>
                         )}
                     </div>
-                    {/* 기록 리스트 */}
+
+                    {/* 경매가 리스트 */}
                     <div className="px-10 pb-10">
                         <p className={sectionTitleClass}>Previous Logs</p>
                         <div className={`
@@ -270,7 +275,27 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                                 </div>
                             )}
                         </div>
-                    </div>
+
+                        {/* 상세 설명창 */}
+                        <div className="mt-8 p-6 border border-gray-200 bg-white shadow-sm">
+                            <h3 className="text-lg font-semibold text-gray-800 mb-3">상세 설명</h3>
+                            <p className="text-sm text-gray-600 leading-relaxed">
+                                이 상품은 최신 트렌드를 반영하여 제작된 프리미엄 아이템입니다. 고급 소재와 세련된 디자인이 조화를 이루며, 일상과 특별한 순간 모두에 어울립니다. <br />
+                                <br />
+                                착용감이 뛰어나며, 다양한 스타일링이 가능합니다. <br />
+                                <br />
+                                <b>특징:</b><br />
+                                - 부드러운 촉감의 원단<br />
+                                - 내구성 강화 마감 처리<br />
+                                - 트렌디한 컬러와 패턴<br />
+                                <br />
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, nisi eu consectetur consectetur, nisl nisi consectetur nisi, euismod euismod nisi nisi euismod. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. <br />
+                                <br />
+                                문의사항은 언제든 고객센터로 연락해 주세요.
+                            </p>
+                        </div>
+
+                    </div>                    
                 </div>
             </div>
         </div>

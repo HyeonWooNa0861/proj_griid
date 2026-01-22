@@ -280,7 +280,7 @@ export default function CreateProductOverlay() {
         </div>
 
         {/* Footer */}
-        <div className="px-10 py-8 border-t flex justify-end gap-3">
+        <div className="px-10 py-8 flex justify-end gap-3">
           <button onClick={handleSaveDraft} className="px-6 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50">
             임시저장
           </button>
