@@ -2,7 +2,36 @@
 
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import type { ChangeEvent } from 'react'
+
+
+
+
+type ActiveBidItem = {
+    id: string
+    category: string
+    designer: string
+    thumb: string
+    startedAt: number
+}
+
+const ACTIVE_BIDS_KEY = 'activeBids'
+
+function readActiveBids(): ActiveBidItem[] {
+    try {
+        const raw = localStorage.getItem(ACTIVE_BIDS_KEY)
+        if (!raw) return []
+        const parsed = JSON.parse(raw)
+        return Array.isArray(parsed) ? (parsed as ActiveBidItem[]) : []
+    } catch {
+        return []
+    }
+}
+
+function writeActiveBids(items: ActiveBidItem[]) {
+    localStorage.setItem(ACTIVE_BIDS_KEY, JSON.stringify(items))
+}
 
 export default function ProductPage({ params }: { params: { id: string } }) {
 
@@ -28,7 +57,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     /* ---------------- 스타일 클래스 ---------------- */
     const cardClass = 
         'relative z-10 w-full max-w-4xl bg-white rounded-none border border-gray-200 shadow-none max-h-[85vh] flex flex-col'
-    const labelClass = 'text-sm fornt-medium text-gray-700 mb-1'
     const inputClass =
         'w-full border border-gray-300 px-3 py-2 text-black focus:outline-none focus:border-gray-500'
     const sectionTitleClass = 'text-sm font-semibold text-gray-800'
@@ -41,9 +69,41 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     ])
     const [expanded, setExpanded] = useState(false)
     const [error, setError] = useState('')
+    const [isActiveBid, setIsActiveBid] = useState(false)
 
     const maxLog =
         logs.length > 0 ? Math.max(...logs) : 0
+
+            useEffect(() => {
+        const list = readActiveBids()
+        setIsActiveBid(list.some((x) => x.id === params.id))
+    }, [params.id])
+
+    const handleStartAuction = () => {
+        const list = readActiveBids()
+        if (list.some((x) => x.id === params.id)) {
+            setIsActiveBid(true)
+            return
+        }
+
+        const item: ActiveBidItem = {
+            id: params.id,
+            category,
+            designer,
+            thumb: images[0] ?? '/logo/Griid_Brand_Logo_Toolkit/IG_Feed_WH/Griid_IG_Feed_Left_WH.png',
+            startedAt: Date.now(),
+        }
+
+        writeActiveBids([item, ...list])
+        setIsActiveBid(true)
+    }
+
+    const handleStopAuction = () => {
+        const list = readActiveBids()
+        const next = list.filter((x) => x.id !== params.id)
+        writeActiveBids(next)
+        setIsActiveBid(false)
+    }
 
     /* ---------------- 유틸 ---------------- */
     const formatNumber = (num: string) =>
@@ -95,40 +155,62 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className={cardClass}>
                 {/* 헤더 */}
                 <div className="relative px-10 pt-10 pb-6">
-                    {/* 위에 막대 주석처리 */}
-                    {/* <div className="px-7">
-                        <div className="h-px bg-gray-300 mb-6"></div>
-                    </div> */}
-                
+                    {/* 좌측 상단: Start/Stop Auction */}
+                    <div className="absolute left-8 top-8 flex items-center gap-2">
+                        {isActiveBid ? (
+                        <button
+                            onClick={handleStopAuction}
+                            className="px-3 py-2 text-xs font-medium border border-gray-300 text-gray-700 hover:bg-gray-50"
+                            aria-label="경매 중단"
+                            type="button"
+                        >
+                            Stop Auction
+                        </button>
+                        ) : (
+                        <button
+                            onClick={handleStartAuction}
+                            className="px-3 py-2 text-xs font-medium bg-gray-900 text-white hover:bg-gray-800"
+                            aria-label="경매 시작"
+                            type="button"
+                        >
+                            Start Auction
+                        </button>
+                        )}
+                    </div>
+
+                    {/* 가운데 로고/타이틀 */}
                     <div className="text-center">
                         <div className="flex flex-col items-center justify-center">
-                            <Image
-                                src="/logo/Griid_Brand_Logo_Toolkit/Logo_Files/Griid_Logo_BK.png"
-                                alt="griid logo"
-                                width={120}
-                                height={40}
-                                sizes="100vw"
-                                className="h-10 w-auto object-contain transition-all duration-300"
-                                priority
-                            />
-                            <p className="text-sm text-gray-500 mt-2">
-                                Product {params.id}
-                            </p>
+                        <Image
+                            src="/logo/Griid_Brand_Logo_Toolkit/Logo_Files/Griid_Logo_BK.png"
+                            alt="griid logo"
+                            width={120}
+                            height={40}
+                            sizes="100vw"
+                            className="h-10 w-auto object-contain transition-all duration-300"
+                            priority
+                        />
+                        <p className="text-sm text-gray-500 mt-2">Product {params.id}</p>
                         </div>
                     </div>
+
+                    {/* 우측 상단: 닫기 */}
                     <button
                         onClick={() => router.back()}
                         className="
-                            absolute right-8 top-8
-                            w-8 h-8
-                            flex items-center justify-center
-                            rounded-full
-                            hover:bg-gray-100"
+                        absolute right-8 top-8
+                        w-8 h-8
+                        flex items-center justify-center
+                        rounded-full
+                        hover:bg-gray-100
+                        "
                         aria-label="close"
+                        type="button"
                     >
                         ✕
                     </button>
-                </div>
+                    </div>
+
                 {/* 스크롤 영역 */}
                 <div className="flex-1 overflow-y-auto scrollbar-hide">
                     <div
