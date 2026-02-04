@@ -36,9 +36,7 @@ const MOCK_PRODUCTS: ProductItem[] = [
     category: 'Dress',
     designer: 'Designer A',
     images: [
-      '/image/dress/001.jpeg',
-      '/image/dress/002.jpeg',
-      '/image/dress/003.jpeg',
+      '/image/dress/001.jpeg', '/image/dress/002.jpeg', '/image/dress/003.jpeg',
     ],
   },
   {
@@ -46,9 +44,7 @@ const MOCK_PRODUCTS: ProductItem[] = [
     category: 'Dress',
     designer: 'Designer B',
     images: [
-      '/image/dress/002.jpeg',
-      '/image/dress/003.jpeg',
-      '/image/dress/004.jpeg',
+      '/image/dress/002.jpeg', '/image/dress/003.jpeg', '/image/dress/004.jpeg',
     ],
   },
   {
@@ -179,6 +175,7 @@ async function fetchProducts(): Promise<ProductItem[]> {
 /* ---------------- 메인 컴포넌트 ---------------- */
 
 export default function Home() {
+  // State 선언
   const [products, setProducts] = useState<ProductItem[]>([])
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
@@ -188,6 +185,7 @@ export default function Home() {
   const [currentVisibleImage, setCurrentVisibleImage] = useState<string>('')
   const containerRef = useRef<HTMLDivElement>(null)
 
+  // 초기 로드
   useEffect(() => {
     const loadProducts = async () => {
       try {
@@ -202,13 +200,41 @@ export default function Home() {
 
     loadProducts()
 
+    // localStorage에서 favorites 불러오기
     const saved = localStorage.getItem('favorites')
     if (saved) {
-      setFavorites(new Set(JSON.parse(saved)))
+      try {
+        const arr = JSON.parse(saved)
+        if (Array.isArray(arr)) {
+          setFavorites(new Set(arr.map(item => item.id)))
+        }
+      } catch (error) {
+        console.error('Failed to parse favorites:', error)
+        setFavorites(new Set())
+      }
     }
   }, [])
 
-  // 컨테이너 크기 계산 useEffect
+  // localStorage 동기화 (다른 탭에서 변경 시)
+  useEffect(() => {
+    const handleStorage = () => {
+      const saved = localStorage.getItem('favorites')
+      if (saved) {
+        try {
+          const arr = JSON.parse(saved)
+          if (Array.isArray(arr)) {
+            setFavorites(new Set(arr.map(item => item.id)))
+          }
+        } catch {
+          setFavorites(new Set())
+        }
+      }
+    }
+    window.addEventListener('storage', handleStorage)
+    return () => window.removeEventListener('storage', handleStorage)
+  }, [])
+
+  // 컨테이너 크기 계산
   useEffect(() => {
     const calculateContainerSize = () => {
       const screenWidth = window.innerWidth
@@ -274,23 +300,22 @@ export default function Home() {
     }
   }, [])
 
-  // IntersectionObserver useEffect (별도로 분리)
+  // IntersectionObserver
   useEffect(() => {
     if (!containerRef.current) return
 
     const observer = new IntersectionObserver(
-        (entries) => {
+      (entries) => {
         entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-            // img.src 대신 data attribute에서 원본 경로 가져오기
+          if (entry.isIntersecting) {
             const imgPath = entry.target.getAttribute('data-current-image')
             if (imgPath) {
-                setCurrentVisibleImage(imgPath)
+              setCurrentVisibleImage(imgPath)
             }
-            }
+          }
         })
-        },
-        { threshold: 0.5 }
+      },
+      { threshold: 0.5 }
     )
 
     const cards = containerRef.current.querySelectorAll('[data-product-card]')
@@ -299,16 +324,51 @@ export default function Home() {
     return () => observer.disconnect()
   }, [products])
 
-  const toggleFavorite = (productId: string) => {
-    setFavorites((prev) => {
-      const newFavorites = new Set(prev)
-      if (newFavorites.has(productId)) {
+  // toggleFavorite 함수
+  const toggleFavorite = (productId: string, productImage: string) => {
+    setFavorites((prevFavorites) => {
+        const newFavorites = new Set(prevFavorites)
+        
+        // localStorage에서 현재 배열 가져오기
+        let arr: {id: string, image: string}[] = []
+        try {
+        const saved = localStorage.getItem('favorites')
+        if (saved) {
+            arr = JSON.parse(saved)
+        }
+        } catch (error) {
+        console.error('Failed to parse localStorage:', error)
+        arr = []
+        }
+
+        // 토글 로직
+        if (newFavorites.has(productId)) {
+        // 제거
         newFavorites.delete(productId)
-      } else {
+        arr = arr.filter((item) => item.id !== productId)
+        } else {
+        // 추가
         newFavorites.add(productId)
-      }
-      localStorage.setItem('favorites', JSON.stringify([...newFavorites]))
-      return newFavorites
+        
+        // localStorage 배열에도 추가 (중복 체크)
+        const exists = arr.find(item => item.id === productId)
+        if (!exists) {
+            arr.push({
+            id: productId,
+            image: productImage
+            })
+        }
+        }
+
+        // localStorage에 저장
+        localStorage.setItem('favorites', JSON.stringify(arr))
+        
+        console.log('Updated favorites:', {
+        ids: Array.from(newFavorites),
+        localStorage: arr
+        })
+
+        return newFavorites
     })
   }
 
@@ -327,7 +387,7 @@ export default function Home() {
     <div className="w-full min-h-screen bg-black relative">
       <Header />
 
-      {/* 배경 블러 레이어 - 컨테이너 밖 전체 영역 */}
+      {/* 배경 블러 레이어 */}
       {currentVisibleImage && containerWidth && (
         <div 
           className="fixed inset-0 z-0"
@@ -389,7 +449,7 @@ function ProductCard({
 }: {
   product: ProductItem
   isFavorited: boolean
-  onToggleFavorite: (id: string) => void
+  onToggleFavorite: (id: string, image: string) => void
   aspectRatio: number
   onImageChange?: (imageUrl: string) => void
 }) {
@@ -455,7 +515,7 @@ function ProductCard({
             key={index}
             className="w-full h-full shrink-0 relative snap-center snap-always"
           >
-            {/* 블러 배경 레이어 - 전체 영역 채우기 */}
+            {/* 블러 배경 레이어 */}
             <div className="absolute inset-0">
               <Image
                 src={image}
@@ -467,7 +527,7 @@ function ProductCard({
               />
             </div>
 
-            {/* 메인 이미지 레이어 - 중앙 배치, 비율 유지, 최대 크기 */}
+            {/* 메인 이미지 레이어 */}
             <div className="absolute inset-0 flex items-center justify-center p-0">
               <div 
                 className="relative max-w-full max-h-full"
@@ -528,14 +588,15 @@ function ProductCard({
           <p className="text-white text-sm font-medium mb-1">
             {product.category}
           </p>
-          <p className="text-white/70 text-xs"> designed by {product.designer}</p>
+          <p className="text-white/70 text-xs">designed by {product.designer}</p>
         </div>
 
         <div className="flex gap-3">
           <button
             onClick={() => router.push(`/product/${product.id}`)}
             className="flex-1 py-3 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-sm border border-white/30 hover:bg-white/20 transition-colors"
-            aria-label="상품 상세 설명 보기">
+            aria-label="상품 상세 설명 보기"
+          >
             Description
           </button>
 
@@ -546,12 +607,13 @@ function ProductCard({
               )
             }
             className="flex-1 py-3 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-sm border border-white/30 hover:bg-white/20 transition-colors"
-            aria-label="디자이너 컬렉션 보기">
+            aria-label="디자이너 컬렉션 보기"
+          >
             {product.designer}
           </button>
 
           <button
-            onClick={() => onToggleFavorite(product.id)}
+            onClick={() => onToggleFavorite(product.id, product.images[0])}
             className="w-12 h-12 flex items-center justify-center bg-transparent p-0 hover:bg-transparent border-none shadow-none"
             aria-label="저장하기"
           >
